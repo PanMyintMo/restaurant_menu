@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">FoodSample</string>
+    <string name="todo">TODO</string>
+    <string name="restaurant_name">Restaurant Name</string>
+    <string name="neighborhood">Neighborhood</string>
+    <string name="hours">Hours</string>
+    <string name="check_out">Check Out</string>
+    <string name="review_name">Review Name</string>
+    <string name="date">Date</string>
+    <string name="rating">Rating</string>
+    <string name="comment">Comment</string>
+</resources>
