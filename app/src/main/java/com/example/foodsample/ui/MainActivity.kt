@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() ,RestaurantListAdapter.RestaurantClickL
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val actionBar = supportActionBar
-        actionBar?.hide()
+        actionBar?.title="Restaurant List"
 
         val restaurantModel = getRestaurantData()
         initRecyclerView(restaurantModel)
@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() ,RestaurantListAdapter.RestaurantClickL
 
 
     private fun initRecyclerView(restaurantDataModel: List<RestaurantDataModel?>?) {
-
         binding.recyclerRestaurant.layoutManager = LinearLayoutManager(this)
         val adapter = RestaurantListAdapter(restaurantDataModel as List<RestaurantDataModel>?,this)
         binding.recyclerRestaurant.adapter = adapter
@@ -65,10 +64,8 @@ class MainActivity : AppCompatActivity() ,RestaurantListAdapter.RestaurantClickL
 
         return restaurantdataModel
     }
-
-    override fun restaurantDataClick(restaurantData: RestaurantDataModel?) {
+    override fun onItemClick(restaurantData: RestaurantDataModel?) {
         val intent=Intent(this,RestaurantMenuActivity::class.java)
         intent.putExtra("Restaurant",restaurantData)
-        startActivity(intent)
-    }
+        startActivity(intent)    }
 }

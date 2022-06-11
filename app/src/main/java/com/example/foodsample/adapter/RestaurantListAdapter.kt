@@ -17,35 +17,43 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class RestaurantListAdapter(
-    private val restaurantData: List<RestaurantDataModel>?,val clickListener: RestaurantClickListener
+    private val restaurantList: List<RestaurantDataModel>?,
+    val clickListener: RestaurantClickListener
 ) : RecyclerView.Adapter<RestaurantListAdapter.CustomRestaurantHolder>() {
 
     private lateinit var binding: RestaurantDataRowBinding
 
     inner class CustomRestaurantHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(restaurantData: RestaurantDataModel?) {
-            binding.restName.text = restaurantData?.name
-            binding.neighborhood.text = restaurantData?.neighborhood
-            binding.hours.text = "Today's Hours :" + getTodayHour(restaurantData?.operating_hours!!)
+        fun bind(restaurentModel: RestaurantDataModel?) {
+            binding.tvRestaurantName.text = restaurentModel?.name
+            binding.tvRestaurantAddress.text = "Address: " + restaurentModel?.address
+            binding.tvRestaurantHours.text =
+                "Today's Hours: " + getTodayHour(restaurentModel?.hours!!)
+
+            Glide.with(binding.thumbImage)
+                .load(restaurentModel.image)
+                .into(binding.thumbImage)
         }
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomRestaurantHolder {
 
-     val  inflater=LayoutInflater.from(parent.context)
-       binding= RestaurantDataRowBinding.inflate(inflater,parent,false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomRestaurantHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        binding = RestaurantDataRowBinding.inflate(inflater, parent, false)
         return CustomRestaurantHolder(binding.root)
     }
-    override fun onBindViewHolder(holder: CustomRestaurantHolder, position: Int) {
-        holder.bind(restaurantData!!.get(position))
-        holder.itemView.setOnClickListener {
-            clickListener.restaurantDataClick(restaurantData.get(position))
-        }
 
+    override fun onBindViewHolder(holder: CustomRestaurantHolder, position: Int) {
+        holder.bind(restaurantList?.get(position))
+        holder.itemView.setOnClickListener {
+            clickListener.onItemClick(restaurantList?.get(position)!!)
+        }
     }
+
     override fun getItemCount(): Int {
-        return restaurantData?.size!!
+        return restaurantList?.size!!
     }
+
     fun getTodayHour(hours: Hours): String? {
 
         val calendar: Calendar = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -69,9 +77,9 @@ class RestaurantListAdapter(
     }
 
 
-    interface RestaurantClickListener{
+    interface RestaurantClickListener {
 
-        fun restaurantDataClick(restaurantData: RestaurantDataModel?)
+        fun onItemClick(restaurantData: RestaurantDataModel?)
 
     }
 
