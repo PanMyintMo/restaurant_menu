@@ -57,5 +57,8 @@ dependencies {
 
     //notification
     implementation 'com.nex3z:notification-badge:1.0.4'
+    //swipeRefersh
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
 
 }

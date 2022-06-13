@@ -21,16 +21,19 @@ class PlaceYourOrderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPlaceYourOrderBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         val menuModel = intent.getParcelableExtra<RestaurantDataModel>("RestaurantModel")
         val actionBar: ActionBar? = supportActionBar
         actionBar?.title = menuModel?.name
         actionBar?.subtitle = menuModel?.address
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
+        initRecyclerView(menuModel)
+
         binding.buttonPlaceYourOrder.setOnClickListener {
             menuModel?.let { it1 -> onPlaceOrderButtonClick(it1) }
         }
-        initRecyclerView(menuModel)
+
 
         binding.switchDelivery.setOnCheckedChangeListener { _, isChecked ->
 

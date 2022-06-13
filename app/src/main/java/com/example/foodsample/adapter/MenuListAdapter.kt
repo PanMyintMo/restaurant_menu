@@ -36,7 +36,6 @@ class MenuListAdapter(val menuList: List<Menu?>?, val clickListener: MenuListCli
             binding.menuName.text = menus.name
             binding.menuPrice.text = "Price: $ ${menus.price}"
 
-
             binding.addToCartButton.setOnClickListener {
                 menus.totalInCart = 1
                 clickListener.addToCartClickListener(menus)
@@ -75,7 +74,6 @@ class MenuListAdapter(val menuList: List<Menu?>?, val clickListener: MenuListCli
     }
 
     interface MenuListClickListener {
-
         fun addToCartClickListener(menu: Menu)
         fun updateCartClickListener(isAdding: Boolean, menu: Menu)
         fun removeFromCartClickListener(menu: Menu)
