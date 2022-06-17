@@ -14,7 +14,6 @@ class ShoppingCartActivity : AppCompatActivity() {
         binding = ActionBarNotificationIconBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val menuNoti=intent.getParcelableExtra<RestaurantDataModel>("menu_data_added")
-
         val actionBar = supportActionBar
         actionBar?.title = menuNoti?.name
         actionBar?.subtitle = menuNoti?.address
