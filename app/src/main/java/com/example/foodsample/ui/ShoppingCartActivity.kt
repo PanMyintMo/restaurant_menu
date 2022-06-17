@@ -13,11 +13,11 @@ class ShoppingCartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActionBarNotificationIconBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val menuNoti=intent.getParcelableExtra<RestaurantDataModel>("menu_data_added")
-        val actionBar = supportActionBar
-        actionBar?.title = menuNoti?.name
-        actionBar?.subtitle = menuNoti?.address
-        actionBar?.setDisplayHomeAsUpEnabled(true)
+      //  val menuNoti=intent.getParcelableExtra<RestaurantDataModel>("menu_data_added")
+       // val actionBar = supportActionBar
+       // actionBar?.title = menuNoti?.name
+       // actionBar?.subtitle = menuNoti?.address
+       // actionBar?.setDisplayHomeAsUpEnabled(true)
 
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
