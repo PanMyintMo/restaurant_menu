@@ -7,10 +7,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.foodsample.entity.MenuEntity
 import com.example.foodsample.models.Menu
 
-//@Database(
-//    entities = [MenuEntity::class],
-//    version = 1,
-//    exportSchema = true)
 @Database(
     entities = [MenuEntity::class],
 //    autoMigrations = [
@@ -44,7 +40,7 @@ abstract class MenuDatabase : RoomDatabase() {
         private val MIGRATION_1_2: Migration = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 // The following query will add a new column called lastUpdate to the notes database
-                database.execSQL("ALTER TABLE notes ADD COLUMN lastUpdate INTEGER NOT NULL DEFAULT 0")
+                database.execSQL("ALTER TABLE menu ADD COLUMN lastUpdate INTEGER NOT NULL DEFAULT 0")
             }
         }
 
@@ -52,7 +48,7 @@ abstract class MenuDatabase : RoomDatabase() {
             return Room.databaseBuilder(
                 context.applicationContext,
                 MenuDatabase::class.java,
-                "notes_database"
+                "menu_database"
             )
                 //.addMigrations(MIGRATION_1_2)
                 .build()

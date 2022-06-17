@@ -138,12 +138,6 @@ class RestaurantMenuActivity : AppCompatActivity(), MenuListAdapter.MenuListClic
             }
             R.id.shopping_cart -> {
                 saveToDatabase(restaurantModel)
-
-                //startActivity(Intent(this,ShoppingCartActivity::class.java))
-//                val intent = Intent(this, ShoppingCartActivity::class.java)
-//                intent.putExtra("menu_data_added", restaurantModel)
-//                setResult(Activity.RESULT_OK, intent)
-//                startActivity(intent)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -151,9 +145,7 @@ class RestaurantMenuActivity : AppCompatActivity(), MenuListAdapter.MenuListClic
 
     private fun saveToDatabase(restaurantDataModel: RestaurantDataModel) {
         lifecycleScope.launch {
-            //restaurantDataModel.menus= itemsInTheCartList
             for (m in itemsInTheCartList!!.indices) {
-
                 menuDatabase.addMenu(
                     MenuEntity(
                         id = 0,
@@ -168,18 +160,6 @@ class RestaurantMenuActivity : AppCompatActivity(), MenuListAdapter.MenuListClic
         //     readMenulauncher.launch(intent)
         startActivity(intent)
     }
-    //  private val readMenulauncher =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { resultmenu ->
-//            if (resultmenu.resultCode == Activity.RESULT_OK) {
-//       //  val updateMenu=resultmenu.data?.getStringExtra("menu_data_added")
-//                //Get the list of Menu
-//                lifecycleScope.launch {
-//                    menuDatabase.addMenu(MenuEntity(
-//                        id =0,
-//                        name =restaurantModel.name.toString(),restaurantModel.price.toDouble()))
-//                }
-//            }
-//        }
 
     private fun updateCarts() {
         val badge = BadgeDrawable.create(this)
