@@ -15,10 +15,12 @@
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_shopping_cart.xml" value="0.5" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_splash.xml" value="0.18" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_success_order.xml" value="0.18" />
+        <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/menu_record_row.xml" value="0.36893203883495146" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/menu_row.xml" value="0.22" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/place_your_order_activity.xml" value="0.1398148148148148" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/place_your_order_row.xml" value="0.33" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/restaurant_data_row.xml" value="0.37383177570093457" />
+        <entry key="..\:/TestProjects/FoodSample/app/src/main/res/menu/custom_popup_menu.xml" value="0.5" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/menu/shopping_cart_menu.xml" value="0.25" />
       </map>
     </option>

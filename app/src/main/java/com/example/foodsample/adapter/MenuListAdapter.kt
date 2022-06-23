@@ -1,6 +1,5 @@
 package com.example.foodsample.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,74 +8,71 @@ import com.bumptech.glide.Glide
 import com.example.foodsample.R
 import com.example.foodsample.databinding.MenuRowBinding
 import com.example.foodsample.models.Menu
-import java.util.zip.Inflater
 
-class MenuListAdapter(val menuList: List<Menu?>?, val clickListener: MenuListClickListener) :
+class MenuListAdapter(private val menuList: List<Menu>, val clickListener: MenuListClickListener) :
     RecyclerView.Adapter<MenuListAdapter.MyViewHolder>() {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): MenuListAdapter.MyViewHolder {
+
         val view = LayoutInflater.from(parent.context).inflate(R.layout.menu_row, parent, false)
         return MyViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: MenuListAdapter.MyViewHolder, position: Int) {
-        menuList!!.get(position)?.let { holder.bind(holder.binding,it) }
+        holder.bind(holder.binding, menuList[position])
     }
 
     override fun getItemCount(): Int {
-        return if (menuList == null) return 0 else menuList.size
+        return menuList.size
     }
 
     inner class MyViewHolder(view: View) :
         RecyclerView.ViewHolder(view) {
+
         val binding = MenuRowBinding.bind(view)
-        fun bind(binding: MenuRowBinding,menus: Menu) {
-            binding.menuName.text = menus.name
-            binding.menuPrice.text = "Price: $ ${menus.price}"
+        fun bind(binding: MenuRowBinding, menu: Menu) {
+            binding.menuName.text = menu.name
+            binding.menuPrice.text = "Price: $ ${menu.price}"
 
             binding.addToCartButton.setOnClickListener {
-                menus.totalInCart = 1
-                clickListener.addToCartClickListener(menus)
+                menu.totalInCart = 1
                 binding.addMoreLayout.visibility = View.VISIBLE
                 binding.addToCartButton.visibility = View.GONE
-                binding.tvCount.text = menus.totalInCart.toString()
+                binding.tvCount.text = menu.totalInCart.toString()
+                clickListener.addToCartClickListener(menu)
             }
+
             binding.imageMinus.setOnClickListener {
-                var total: Int = menus.totalInCart!!
-                total--
-                if (total > 0) {
-                    menus.totalInCart = total
-                    clickListener.updateCartClickListener(false, menus)
-                    binding.tvCount.text = menus.totalInCart.toString()
+                menu.totalInCart--
+                if (menu.totalInCart > 0) {
+                    binding.tvCount.text = menu.totalInCart.toString()
                 } else {
-                    menus.totalInCart = total
-                    clickListener.removeFromCartClickListener(menus)
                     binding.addMoreLayout.visibility = View.GONE
                     binding.addToCartButton.visibility = View.VISIBLE
                 }
+
+                clickListener.removeFromCartClickListener(menu)
             }
+
             binding.imageAddOne.setOnClickListener {
-                var total: Int = menus.totalInCart!!
-                total++
-                if (total <= 10) {
-                    menus.totalInCart = total
-                    clickListener.updateCartClickListener(true, menus)
-                    binding.tvCount.text = total.toString()
+                if (menu.totalInCart!! < 10) {
+                    menu.totalInCart++
+                    binding.tvCount.text = menu.totalInCart.toString()
+                    clickListener.addToCartClickListener(menu)
                 }
             }
 
             Glide.with(binding.thumbImage)
-                .load(menus.url)
+                .load(menu.url)
                 .into(binding.thumbImage)
         }
     }
 
     interface MenuListClickListener {
-
         fun addToCartClickListener(menu: Menu)
-        fun updateCartClickListener(isAdding: Boolean, menu: Menu)
         fun removeFromCartClickListener(menu: Menu)
     }
 }

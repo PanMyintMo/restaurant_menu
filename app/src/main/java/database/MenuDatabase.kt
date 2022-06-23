@@ -5,7 +5,6 @@ import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.foodsample.entity.MenuEntity
-import com.example.foodsample.models.Menu
 
 @Database(
     entities = [MenuEntity::class],

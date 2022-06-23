@@ -45,7 +45,6 @@
         android:layout_margin="10dp"
         android:layout_marginTop="1dp"
         android:gravity="center"
-        android:padding="10dp"
         android:text="@string/checkout"
         android:textSize="16sp"
         android:textStyle="bold"
