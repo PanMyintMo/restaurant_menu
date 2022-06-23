@@ -18,7 +18,9 @@ class PlaceYourOrderAdapter(private val menuList: List<com.example.foodsample.mo
         @SuppressLint("SetTextI18n")
         fun bind(binding: PlaceYourOrderRowBinding, menu: com.example.foodsample.models.Menu) {
             binding.menuName.text = menu.name
-            binding.menuPrice.text = "Price $ " + String.format("%.2f", menu.price?.times(menu.totalInCart!!) ?: (menu.price!! * menu.totalInCart!!))
+            binding.menuPrice.text = "Price $ " + String.format("%.2f",
+                menu.price.times(menu.totalInCart!!)
+            )
             binding.menuQty.text = "Qty :" + menu.totalInCart
 
             Glide.with(binding.thumbImage)

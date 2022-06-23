@@ -15,11 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodSample"
         tools:targetApi="31">
-        <activity
-            android:name=".ui.ShoppingCartActivity"
-            android:exported="false" />
+
         <activity
             android:name=".ui.SuccessOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.ShoppingCartActivity"
             android:exported="false" />
         <activity
             android:name=".ui.PlaceYourOrderActivity"
