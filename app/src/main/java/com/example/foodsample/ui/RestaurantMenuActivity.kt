@@ -20,6 +20,7 @@ import database.MenuDatabase
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class RestaurantMenuActivity : AppCompatActivity(), MenuListAdapter.MenuListClickListener {
 
@@ -32,8 +33,8 @@ class RestaurantMenuActivity : AppCompatActivity(), MenuListAdapter.MenuListClic
         MenuDatabase.getDatabase(this).DaoMenu()
     }
 
-    private lateinit var restaurantModel: RestaurantDataModel
-    private var menuList: List<Menu>? = null
+    private  var restaurantModel: RestaurantDataModel?= null
+    private var menuList: ArrayList<Menu>? = null
     private var menuListAdapter: MenuListAdapter? = null
     private var itemsInTheCartList: MutableList<Menu> = arrayListOf()
 
@@ -46,10 +47,10 @@ class RestaurantMenuActivity : AppCompatActivity(), MenuListAdapter.MenuListClic
         restaurantModel = intent?.getParcelableExtra("Restaurant")!!
 
         val actionBar = supportActionBar
-        actionBar?.title = restaurantModel.name
-        actionBar?.subtitle = restaurantModel.address
+        actionBar?.title = restaurantModel!!.name
+        actionBar?.subtitle = restaurantModel!!.address
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        menuList = restaurantModel.menus as List<Menu>?
+        menuList = restaurantModel!!.menus as ArrayList<Menu>?
         initRecyclerView(menuList!!)
 
         binding.checkoutButton.setOnClickListener {
@@ -57,7 +58,7 @@ class RestaurantMenuActivity : AppCompatActivity(), MenuListAdapter.MenuListClic
                 Snackbar.make(binding.root, "Please add some items in cart", Snackbar.LENGTH_SHORT)
                     .show()
             } else {
-                restaurantModel.menus = itemsInTheCartList
+                restaurantModel!!.menus = itemsInTheCartList
                 val intent = Intent(this@RestaurantMenuActivity, PlaceYourOrderActivity::class.java)
                 intent.putExtra("RestaurantModel", restaurantModel)
                 resultLauncher.launch(intent)
@@ -74,22 +75,14 @@ class RestaurantMenuActivity : AppCompatActivity(), MenuListAdapter.MenuListClic
 
     private fun initRecyclerView(menu: List<Menu>) {
         binding.menuRecyclerView.layoutManager = GridLayoutManager(this, 2)
-        menuListAdapter = MenuListAdapter(menu, this)
+        menuListAdapter = MenuListAdapter(menu as MutableList<Menu>, this)
         binding.menuRecyclerView.adapter = menuListAdapter
     }
 
-    override fun addToCartClickListener(menu: Menu) {
+
+    override fun addToCartClickListener(menu: Menu, selected: Boolean) {
         if (!itemsInTheCartList.contains(menu)){
             itemsInTheCartList.add(menu)
-        }
-
-        updateCarts()
-        binding.checkoutButton.text = "Checkout (${itemsInTheCartList.size}) Items"
-    }
-
-    override fun removeFromCartClickListener(menu: Menu) {
-        if (menu.totalInCart == 0) {
-            itemsInTheCartList.remove(menu)
         }
 
         updateCarts()
@@ -109,13 +102,11 @@ class RestaurantMenuActivity : AppCompatActivity(), MenuListAdapter.MenuListClic
             }
             R.id.shopping_cart -> {
                 saveToDatabase()
-                restaurantModel.menus = itemsInTheCartList
+                restaurantModel?.menus = itemsInTheCartList
                 val intent =
                     Intent(this@RestaurantMenuActivity, ShoppingCartActivity::class.java)
                 intent.putExtra("menu_data_added", restaurantModel)
                 startActivity(intent)
-
-
             }
         }
         return super.onOptionsItemSelected(item)
@@ -130,12 +121,17 @@ class RestaurantMenuActivity : AppCompatActivity(), MenuListAdapter.MenuListClic
                         id = 0,
                         name = itemsInTheCartList[m].name.toString(),
                         itemsInTheCartList[m].price.toDouble(),
-                        currentDateAndTime,
-                        paid = true
-                    )
+                        currentDateAndTime,click=true)
                 )
             }
+
         }
+    }
+
+    private fun retrieveDB(){
+
+     //   menuDatabase.delete(MenuEntity())
+        updateCarts()
     }
 
     private fun updateCarts() {
@@ -152,5 +148,7 @@ class RestaurantMenuActivity : AppCompatActivity(), MenuListAdapter.MenuListClic
         }
     }
 }
+
+
 
 

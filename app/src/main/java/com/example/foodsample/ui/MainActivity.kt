@@ -67,5 +67,6 @@ class MainActivity : AppCompatActivity() ,RestaurantListAdapter.RestaurantClickL
     override fun onItemClick(restaurantData: RestaurantDataModel?) {
         val intent=Intent(this,RestaurantMenuActivity::class.java)
         intent.putExtra("Restaurant",restaurantData)
-        startActivity(intent)    }
+        startActivity(intent)
+    }
 }

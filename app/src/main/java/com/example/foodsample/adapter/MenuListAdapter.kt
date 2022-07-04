@@ -1,17 +1,24 @@
 package com.example.foodsample.adapter
 
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.core.content.ContextCompat
+import androidx.core.view.children
+import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.foodsample.R
 import com.example.foodsample.databinding.MenuRowBinding
 import com.example.foodsample.models.Menu
+import com.google.android.material.badge.BadgeDrawable
 
-class MenuListAdapter(private val menuList: List<Menu>, val clickListener: MenuListClickListener) :
+class MenuListAdapter(val menuList: MutableList<Menu>, val clickListener: MenuListClickListener) :
     RecyclerView.Adapter<MenuListAdapter.MyViewHolder>() {
 
+    private var currentSelection = 0
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -22,7 +29,7 @@ class MenuListAdapter(private val menuList: List<Menu>, val clickListener: MenuL
     }
 
     override fun onBindViewHolder(holder: MenuListAdapter.MyViewHolder, position: Int) {
-        holder.bind(holder.binding, menuList[position])
+        holder.bind(holder.binding, menuList[position],selected = true)
     }
 
     override fun getItemCount(): Int {
@@ -33,48 +40,26 @@ class MenuListAdapter(private val menuList: List<Menu>, val clickListener: MenuL
         RecyclerView.ViewHolder(view) {
 
         val binding = MenuRowBinding.bind(view)
-        fun bind(binding: MenuRowBinding, menu: Menu) {
+        fun bind(binding: MenuRowBinding, menu: Menu,selected: Boolean) {
+
             binding.menuName.text = menu.name
             binding.menuPrice.text = "Price: $ ${menu.price}"
-
+           binding.addToCartButton.isSelected = selected
             binding.addToCartButton.setOnClickListener {
-                menu.totalInCart = 1
-                binding.addMoreLayout.visibility = View.VISIBLE
-                binding.addToCartButton.visibility = View.GONE
-                binding.tvCount.text = menu.totalInCart.toString()
-                clickListener.addToCartClickListener(menu)
+                clickListener.addToCartClickListener(menu,selected)
+               binding.addToCartButton.isSelected = !binding.addToCartButton.isSelected
             }
-
-            binding.imageMinus.setOnClickListener {
-                menu.totalInCart--
-                if (menu.totalInCart > 0) {
-                    binding.tvCount.text = menu.totalInCart.toString()
-                } else {
-                    binding.addMoreLayout.visibility = View.GONE
-                    binding.addToCartButton.visibility = View.VISIBLE
-                }
-
-                clickListener.removeFromCartClickListener(menu)
-            }
-
-            binding.imageAddOne.setOnClickListener {
-                if (menu.totalInCart!! < 10) {
-                    menu.totalInCart++
-                    binding.tvCount.text = menu.totalInCart.toString()
-                    clickListener.addToCartClickListener(menu)
-                }
-            }
-
             Glide.with(binding.thumbImage)
                 .load(menu.url)
                 .into(binding.thumbImage)
         }
+
     }
 
     interface MenuListClickListener {
-        fun addToCartClickListener(menu: Menu)
-        fun removeFromCartClickListener(menu: Menu)
-    }
-}
+        fun addToCartClickListener(menu: Menu,selected:Boolean)
 
+    }
+
+}
 

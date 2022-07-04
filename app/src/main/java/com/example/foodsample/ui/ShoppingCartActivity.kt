@@ -1,9 +1,9 @@
 package com.example.foodsample.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodsample.adapter.MenuRecordAdapter
 import com.example.foodsample.databinding.ActionBarNotificationIconBinding
@@ -11,12 +11,8 @@ import com.example.foodsample.models.Menu
 import com.example.foodsample.models.RestaurantDataModel
 
 
-
-class ShoppingCartActivity : AppCompatActivity(), MenuRecordAdapter.OnItemClick {
-
-
-    private lateinit var newMenuItem: MutableList<Menu>
-
+class ShoppingCartActivity : AppCompatActivity() {
+    private var newMenuItem: MutableList<Menu?> = mutableListOf()
     private var menuRecordAdapter: MenuRecordAdapter? = null
 
     private var restaurantModel: RestaurantDataModel? = null
@@ -29,40 +25,38 @@ class ShoppingCartActivity : AppCompatActivity(), MenuRecordAdapter.OnItemClick 
         setContentView(binding.root)
 
         restaurantModel = intent?.getParcelableExtra("menu_data_added")
-        newMenuItem = restaurantModel?.menus as MutableList<Menu>
+        newMenuItem = restaurantModel?.menus as  MutableList<Menu?>
         val actionBar = supportActionBar
         actionBar?.title = "Basket List"
         actionBar?.subtitle = "Address " + restaurantModel?.address
         actionBar?.setDisplayHomeAsUpEnabled(true)
-
-        initRecyclerView(restaurantModel)
-
+        initRecyclerView()
     }
 
-    private fun initRecyclerView(restaurantModel: RestaurantDataModel?) {
+    private fun initRecyclerView() {
         binding.recyclerRecord.layoutManager = LinearLayoutManager(this)
-        menuRecordAdapter = MenuRecordAdapter(newMenuItem, this)
+        menuRecordAdapter= MenuRecordAdapter(this,newMenuItem)
         binding.recyclerRecord.adapter = menuRecordAdapter
 
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> finish()
+            android.R.id.home -> onBackPressed()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    override fun deleteCartListItem(menu: Menu, position: Int) {
-        Toast.makeText(this, "Delete reach", Toast.LENGTH_SHORT).show()
-        newMenuItem.removeAt(position)
-        menuRecordAdapter?.notifyItemRemoved(position)
+    override fun onBackPressed() {
+
+        val intent= Intent(this@ShoppingCartActivity,RestaurantMenuActivity::class.java)
+
+        intent.putExtra("remainingItem",newMenuItem.size)
+        startActivity(intent)
+        finish()
     }
 
-
 }
-
-
 
 
 
