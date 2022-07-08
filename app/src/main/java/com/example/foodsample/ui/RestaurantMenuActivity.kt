@@ -1,154 +1,166 @@
 package com.example.foodsample.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.foodsample.R
-import com.example.foodsample.adapter.MenuListAdapter
+import com.example.foodsample.adapter.RestaurantMenuAdapter
 import com.example.foodsample.databinding.ActivityRestaurantMenuBinding
-import com.example.foodsample.entity.MenuEntity
-import com.example.foodsample.models.Menu
-import com.example.foodsample.models.RestaurantDataModel
+import com.example.foodsample.entity.CartItem
+import com.example.foodsample.models.Restaurant
+import com.example.foodsample.models.RestaurantMenu
+import com.example.foodsample.util.SpacingItemDecoration
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
-import com.google.android.material.snackbar.Snackbar
-import database.MenuDatabase
+import database.AppDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
-class RestaurantMenuActivity : AppCompatActivity(), MenuListAdapter.MenuListClickListener {
+class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClickedListener {
 
-    private lateinit var binding: ActivityRestaurantMenuBinding
-    private val dateFormat = SimpleDateFormat("MMM d,yyyy h:mm, a", Locale.getDefault())
-    private val currentDateAndTime = dateFormat.format(Date())
-    private var badge: BadgeDrawable? = null
-
-    private val menuDatabase by lazy {
-        MenuDatabase.getDatabase(this).DaoMenu()
+    companion object {
+        const val EXTRA_RESTAURANT = "EXTRA_RESTAURANT"
     }
 
-    private  var restaurantModel: RestaurantDataModel?= null
-    private var menuList: ArrayList<Menu>? = null
-    private var menuListAdapter: MenuListAdapter? = null
-    private var itemsInTheCartList: MutableList<Menu> = arrayListOf()
+    private lateinit var binding: ActivityRestaurantMenuBinding
+    private lateinit var restaurant: Restaurant
+    private lateinit var appDatabase: AppDatabase
+
+    private lateinit var restaurantMenuList: ArrayList<RestaurantMenu>
+    private val cartCheckedList = arrayListOf<Boolean>()
+    private lateinit var adapter: RestaurantMenuAdapter
+    private var badgeDrawable: BadgeDrawable? = null
+    private var totalInCart = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRestaurantMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.toolBar)
+        setSupportActionBar(binding.toolbar)
 
-        restaurantModel = intent?.getParcelableExtra("Restaurant")!!
+        appDatabase = AppDatabase.getInstance(this)
+        intent.getParcelableExtra<Restaurant>(EXTRA_RESTAURANT)?.let {
+            restaurant = it
+            restaurantMenuList = restaurant.menus
+            restaurantMenuList.forEach { _ -> cartCheckedList.add(false) }
 
-        val actionBar = supportActionBar
-        actionBar?.title = restaurantModel!!.name
-        actionBar?.subtitle = restaurantModel!!.address
-        actionBar?.setDisplayHomeAsUpEnabled(true)
-        menuList = restaurantModel!!.menus as ArrayList<Menu>?
-        initRecyclerView(menuList!!)
+            initViews()
+            loadCartItems()
+        }
+    }
 
-        binding.checkoutButton.setOnClickListener {
-            if (itemsInTheCartList.isEmpty()) {
-                Snackbar.make(binding.root, "Please add some items in cart", Snackbar.LENGTH_SHORT)
-                    .show()
-            } else {
-                restaurantModel!!.menus = itemsInTheCartList
-                val intent = Intent(this@RestaurantMenuActivity, PlaceYourOrderActivity::class.java)
-                intent.putExtra("RestaurantModel", restaurantModel)
-                resultLauncher.launch(intent)
+    private fun loadCartItems() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val cartItems = appDatabase.cartItemDao().getAllFromRestaurant(restaurant.name)
+            totalInCart = cartItems.size
+
+            restaurantMenuList.forEachIndexed { index, restaurantMenu ->
+                val cardItem = cartItems.firstOrNull { it.name == restaurantMenu.name }
+                cartCheckedList[index] = cardItem != null
             }
+
+            launch(Dispatchers.Main) {
+                adapter.notifyItemRangeChanged(0, restaurantMenuList.size)
+                updateBadgeWithCheckout()
+            }
+        }
+    }
+
+    private fun initViews() {
+        supportActionBar?.title = restaurant.name
+        supportActionBar?.subtitle = restaurant.address
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val decoration = SpacingItemDecoration(1, toPx(15), true)
+        binding.recycler.addItemDecoration(decoration)
+        binding.recycler.setHasFixedSize(true)
+
+        adapter = RestaurantMenuAdapter(this, restaurantMenuList, cartCheckedList, this)
+        binding.recycler.adapter = adapter
+        binding.btnCheckout.setOnClickListener { launchShoppingCartActivity() }
+    }
+
+    private fun addMenuToDatabase(restaurantMenu: RestaurantMenu) {
+        CoroutineScope(Dispatchers.IO).launch {
+            appDatabase.cartItemDao().insert(
+                CartItem(
+                    restaurantName = restaurant.name,
+                    name = restaurantMenu.name,
+                    price = restaurantMenu.price,
+                    url = restaurantMenu.url
+                )
+            )
+        }
+    }
+
+    private fun removeMenuFromDatabase(restaurantMenu: RestaurantMenu) {
+        CoroutineScope(Dispatchers.IO).launch {
+            appDatabase.cartItemDao().delete(restaurantMenu.name)
         }
     }
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                finish()
+                loadCartItems()
             }
         }
 
-    private fun initRecyclerView(menu: List<Menu>) {
-        binding.menuRecyclerView.layoutManager = GridLayoutManager(this, 2)
-        menuListAdapter = MenuListAdapter(menu as MutableList<Menu>, this)
-        binding.menuRecyclerView.adapter = menuListAdapter
+    private fun launchShoppingCartActivity() {
+        val intent = Intent(this, ShoppingCartActivity::class.java)
+        intent.putExtra(EXTRA_RESTAURANT, restaurant)
+        resultLauncher.launch(intent)
     }
 
-
-    override fun addToCartClickListener(menu: Menu, selected: Boolean) {
-        if (!itemsInTheCartList.contains(menu)){
-            itemsInTheCartList.add(menu)
+    override fun onCartClick(position: Int, isCartChecked: Boolean) {
+        cartCheckedList[position] = isCartChecked
+        if (isCartChecked) {
+            totalInCart++
+            addMenuToDatabase(restaurantMenuList[position])
+        } else {
+            totalInCart--
+            removeMenuFromDatabase(restaurantMenuList[position])
         }
 
-        updateCarts()
-        binding.checkoutButton.text = "Checkout (${itemsInTheCartList.size}) Items"
+        updateBadgeWithCheckout()
     }
 
-    override fun onCreateOptionsMenu(menus: android.view.Menu): Boolean {
-        menuInflater.inflate(R.menu.shopping_cart_menu, menus)
-        updateCarts()
-        return super.onCreateOptionsMenu(menus)
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.restaurant_menu, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> {
-                finish() // action bar back button
-            }
-            R.id.shopping_cart -> {
-                saveToDatabase()
-                restaurantModel?.menus = itemsInTheCartList
-                val intent =
-                    Intent(this@RestaurantMenuActivity, ShoppingCartActivity::class.java)
-                intent.putExtra("menu_data_added", restaurantModel)
-                startActivity(intent)
-            }
+            R.id.menu_shopping_cart -> launchShoppingCartActivity()
         }
         return super.onOptionsItemSelected(item)
     }
 
+    @SuppressLint("UnsafeOptInUsageError")
+    private fun updateBadgeWithCheckout() {
+        binding.btnCheckout.isEnabled = totalInCart != 0
+        if (badgeDrawable == null) badgeDrawable = BadgeDrawable.create(this)
+        badgeDrawable!!.number = totalInCart
 
-    private fun saveToDatabase() {
-        lifecycleScope.launch {
-            for (m in itemsInTheCartList.indices) {
-                menuDatabase.addMenu(
-                    MenuEntity(
-                        id = 0,
-                        name = itemsInTheCartList[m].name.toString(),
-                        itemsInTheCartList[m].price.toDouble(),
-                        currentDateAndTime,click=true)
-                )
-            }
+        if (totalInCart == 0) {
+            binding.btnCheckout.setText(R.string.btn_checkout)
+            binding.btnCheckout.setText(R.string.btn_checkout)
+            BadgeUtils.detachBadgeDrawable(badgeDrawable, binding.toolbar, R.id.menu_shopping_cart)
 
-        }
-    }
-
-    private fun retrieveDB(){
-
-     //   menuDatabase.delete(MenuEntity())
-        updateCarts()
-    }
-
-    private fun updateCarts() {
-        if (badge == null) {
-            badge = BadgeDrawable.create(this@RestaurantMenuActivity)
-        }
-
-        if (itemsInTheCartList.isEmpty()) {
-            BadgeUtils.detachBadgeDrawable(badge, binding.toolBar, R.id.shopping_cart)
         } else {
-            // badge.badgeTextColor = ContextCompat.getColor(this, R.color.purple_200)
-            badge?.number = itemsInTheCartList.size
-            badge?.let { BadgeUtils.attachBadgeDrawable(it, binding.toolBar, R.id.shopping_cart) }
+            binding.btnCheckout.text = getString(R.string.btn_checkout_items, totalInCart)
+            BadgeUtils.attachBadgeDrawable(
+                badgeDrawable!!,
+                binding.toolbar,
+                R.id.menu_shopping_cart
+            )
         }
+
+
     }
 }
-
-
-
-

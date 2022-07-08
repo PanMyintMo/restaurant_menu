@@ -1,72 +1,59 @@
 package com.example.foodsample.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodsample.R
-import com.example.foodsample.adapter.RestaurantListAdapter
+import com.example.foodsample.adapter.RestaurantAdapter
 import com.example.foodsample.databinding.ActivityMainBinding
-import com.example.foodsample.models.RestaurantDataModel
+import com.example.foodsample.models.Restaurant
+import com.example.foodsample.util.SpacingItemDecoration
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.StringWriter
 import java.io.Writer
 
-class MainActivity : AppCompatActivity() ,RestaurantListAdapter.RestaurantClickListener{
-
+class MainActivity : BaseActivity(),
+    RestaurantAdapter.OnItemClickedListener {
     private lateinit var binding: ActivityMainBinding
+    private val restaurants = arrayListOf<Restaurant>()
+    private lateinit var adapter: RestaurantAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val actionBar = supportActionBar
-        actionBar?.title="Restaurant List"
-
-        val restaurantModel = getRestaurantData()
-        initRecyclerView(restaurantModel)
+        actionBar?.title = "Restaurant List"
+        initRecyclerView()
+        restaurants.addAll(getRestaurants())
+        adapter.notifyItemRangeInserted(0, restaurants.size)
 
     }
 
-
-    private fun initRecyclerView(restaurantDataModel: List<RestaurantDataModel?>?) {
+    private fun initRecyclerView() {
+        val decoration = SpacingItemDecoration(1, toPx(15), true)
+        binding.recyclerRestaurant.addItemDecoration(decoration)
+        binding.recyclerRestaurant.setHasFixedSize(true)
         binding.recyclerRestaurant.layoutManager = LinearLayoutManager(this)
-        val adapter = RestaurantListAdapter(restaurantDataModel as List<RestaurantDataModel>?,this)
+        adapter = RestaurantAdapter(restaurants, this)
         binding.recyclerRestaurant.adapter = adapter
 
     }
 
-    private fun getRestaurantData(): List<RestaurantDataModel?> {
-
-        val inputStream = resources.openRawResource(R.raw.restaurant)
-        val writer: Writer = StringWriter()
-        val buffer = CharArray(1024)
-
-        try {
-            val reader = BufferedReader(InputStreamReader(inputStream, "UTF-8"))
-            var n: Int
-            while (reader.read(buffer).also { n = it } != -1) {
-                writer.write(buffer, 0, n)
-            }
-
-        } catch (e: Exception) {
-        }
-
-        val jsonStr: String = writer.toString()
-        val gson = Gson()
-        val restaurantdataModel = gson.fromJson<Array<RestaurantDataModel>>(
-            jsonStr,
-            Array<RestaurantDataModel>
-            ::class.java
-        ).toList()
-
-        return restaurantdataModel
+    private fun getRestaurants(): List<Restaurant> {
+        val json = assets.open("restaurant.json")
+            .bufferedReader()
+            .use { it.readText() }
+        val restaurantListType = object : TypeToken<List<Restaurant>>() {}.type
+        return Gson().fromJson(json, restaurantListType) as List<Restaurant>
     }
-    override fun onItemClick(restaurantData: RestaurantDataModel?) {
-        val intent=Intent(this,RestaurantMenuActivity::class.java)
-        intent.putExtra("Restaurant",restaurantData)
+
+    override fun onItemClick( restaurant: Restaurant) {
+        val intent = Intent(this, RestaurantMenuActivity::class.java)
+        intent.putExtra(RestaurantMenuActivity.EXTRA_RESTAURANT, restaurant)
         startActivity(intent)
     }
 }

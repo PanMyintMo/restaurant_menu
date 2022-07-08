@@ -1,48 +1,39 @@
 <resources>
-    <string name="app_name">FoodSample</string>
-    <string name="todo">TODO</string>
-    <string name="restaurant_name">Restaurant Name</string>
-    <string name="hours">Hours</string>
-    <string name="check_out">Check Out</string>
-    <string name="review_name">Review Name</string>
-    <string name="date">Date</string>
-    <string name="rating">Rating</string>
-    <string name="comment">Comment</string>
-    <string name="address">Address</string>
-    <string name="customer_details">Customer Details</string>
-    <string name="pickup">Pickup</string>
-    <string name="delivery">Delivery</string>
-    <string name="enter_your_name">Enter your name</string>
-    <string name="enter_your_address">Enter your address</string>
-    <string name="enter_your_city">Enter your city</string>
-    <string name="enter_your_state">Enter your state</string>
-    <string name="enter_your_zip">Enter your zip</string>
-    <string name="card_details">Card Details</string>
-    <string name="enter_card_number">Enter Card Number</string>
-    <string name="enter_card_expiry_mm_yyyy">Enter Card expiry(mm/yyyy)</string>
-    <string name="enter_card_pin_3_digits">Enter Card pin(3 digits)</string>
-    <string name="total_items_in_cart">Total items in cart</string>
-    <string name="sub_total">Sub total</string>
-    <string name="place_your_order">Place your order</string>
-    <string name="_0_0">$0.0</string>
-    <string name="total">Total</string>
-    <string name="delivery_charge">Delivery Charge</string>
-    <string name="checkout">Checkout</string>
-    <string name="order_places_successfully">Order places successfully.</string>
-    <string name="done">Done</string>
-    <string name="shopping_cart">Shopping Cart</string>
-    <string name="nothing_to_show">Nothing to Show</string>
-    <string name="_12">12</string>
-    <string name="_0">0</string>
-    <string name="time">Time</string>
+    <string name="app_name">Food Sample</string>
 
+    <string name="label_restaurant_list">Restaurant List</string>
+    <string name="label_shopping_cart">Shopping Cart</string>
+    <string name="label_order">Order</string>
+    <string name="label_order_success">Order Success</string>
 
+    <string name="btn_checkout">Checkout</string>
+    <string name="btn_checkout_items">Checkout (%d) items</string>
+    <string name="btn_order">Order</string>
+    <string name="btn_order_now">Order now</string>
+    <string name="btn_order_with_unit">Order now (%.2f $)</string>
+    <string name="btn_ok">OK</string>
 
-    <string name="record_time">Record Data :%s</string>
-    <string name="quality">Quality</string>
-    <string name="qty">Qty</string>
-    <string name="prices">Prices</string>
-    <string name="name">Name</string>
-    <string name="delete">Delete</string>
-    <string name="_1">1</string>
+    <string name="title_price_unit">%.2f $</string>
+    <string name="title_shopping_cart">Shopping cart</string>
+    <string name="title_customer_details">Customer details</string>
+    <string name="title_pickup_delivery">Pickup delivery</string>
+    <string name="title_card_details">Card details</string>
+    <string name="title_total_items_in_cart">Total items in cart</string>
+    <string name="title_subtotal">Subtotal</string>
+    <string name="title_delivery_charge">Delivery charge</string>
+    <string name="title_total">Total</string>
+
+    <string name="hint_name">Name</string>
+    <string name="hint_address">Address</string>
+    <string name="hint_city">City</string>
+    <string name="hint_state">State</string>
+    <string name="hint_zip_code">Zip code</string>
+    <string name="hint_mm_yy">mm/yy</string>
+    <string name="hint_card_expiry">Expiry</string>
+    <string name="hint_card_number">Card number</string>
+    <string name="hint_card_pin">PIN</string>
+
+    <string name="err_empty">%s should not be empty.</string>
+
+    <string name="msg_order_success">Order placed successfully.</string>
 </resources>

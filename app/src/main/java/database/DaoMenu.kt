@@ -2,16 +2,33 @@ package database
 
 
 import androidx.room.*
-import com.example.foodsample.entity.MenuEntity
-
+import com.example.foodsample.entity.CartItem
 @Dao
-interface DaoMenu {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addMenu(menuEntity: MenuEntity)
+interface CartItemDao {
+    @Query("SELECT * FROM cart_items ORDER BY id DESC")
+    fun getAll(): List<CartItem>
 
-    @Query("SELECT * FROM menu_table  ORDER BY id ASC")
-    fun getAllData(): List<MenuEntity>
+    @Query("SELECT * FROM cart_items WHERE restaurant_name = :restaurantName")
+    fun getAllFromRestaurant(restaurantName: String): List<CartItem>
 
-    //@Delete
-//    fun deleteMenuItem(menu: ArrayList<Menu?>)
+    @Query("DELETE FROM cart_items WHERE restaurant_name = :restaurantName")
+    fun deleteAllFromRestaurant(restaurantName: String)
+
+    @Query("SELECT * FROM cart_items WHERE name = :menuName LIMIT 1")
+    fun get(menuName: String): CartItem?
+
+    @Insert
+    fun insert(cartItem: CartItem): Long
+
+    @Update
+    fun update(cartItem: CartItem)
+
+    @Delete
+    fun delete(cartItem: CartItem)
+
+    @Query("DELETE FROM cart_items WHERE name = :menuName")
+    fun delete(menuName: String)
 }
+
+
+

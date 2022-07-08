@@ -1,62 +1,94 @@
 package com.example.foodsample.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.foodsample.adapter.MenuRecordAdapter
-import com.example.foodsample.databinding.ActionBarNotificationIconBinding
-import com.example.foodsample.models.Menu
-import com.example.foodsample.models.RestaurantDataModel
+import com.example.foodsample.R
+import com.example.foodsample.adapter.CartItemAdapter
+import com.example.foodsample.databinding.ActivityShoppingCartBinding
+import com.example.foodsample.entity.CartItem
+import com.example.foodsample.models.Restaurant
+import com.example.foodsample.util.SpacingItemDecoration
+import database.AppDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
+class ShoppingCartActivity : BaseActivity(), CartItemAdapter.OnCartUpdateListener {
 
-class ShoppingCartActivity : AppCompatActivity() {
-    private var newMenuItem: MutableList<Menu?> = mutableListOf()
-    private var menuRecordAdapter: MenuRecordAdapter? = null
+    companion object {
+        const val MAX_ITEM_COUNT = 10
+    }
 
-    private var restaurantModel: RestaurantDataModel? = null
-
-    private lateinit var binding: ActionBarNotificationIconBinding
+    private lateinit var binding: ActivityShoppingCartBinding
+    private lateinit var restaurant: Restaurant
+    private lateinit var appDatabase: AppDatabase
+    private lateinit var cartItems: ArrayList<CartItem>
+    private lateinit var adapter: CartItemAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActionBarNotificationIconBinding.inflate(layoutInflater)
+        binding = ActivityShoppingCartBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        restaurantModel = intent?.getParcelableExtra("menu_data_added")
-        newMenuItem = restaurantModel?.menus as  MutableList<Menu?>
-        val actionBar = supportActionBar
-        actionBar?.title = "Basket List"
-        actionBar?.subtitle = "Address " + restaurantModel?.address
-        actionBar?.setDisplayHomeAsUpEnabled(true)
-        initRecyclerView()
-    }
-
-    private fun initRecyclerView() {
-        binding.recyclerRecord.layoutManager = LinearLayoutManager(this)
-        menuRecordAdapter= MenuRecordAdapter(this,newMenuItem)
-        binding.recyclerRecord.adapter = menuRecordAdapter
-
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> onBackPressed()
+        appDatabase = AppDatabase.getInstance(this)
+        intent.getParcelableExtra<Restaurant>(RestaurantMenuActivity.EXTRA_RESTAURANT)?.let {
+            restaurant = it
+            loadCartItems()
         }
-        return super.onOptionsItemSelected(item)
     }
 
+    private fun loadCartItems() {
+        CoroutineScope(Dispatchers.IO).launch {
+            cartItems = appDatabase.cartItemDao().getAllFromRestaurant(restaurant.name) as ArrayList<CartItem>
+            launch(Dispatchers.Main) { initViews() }
+        }
+    }
+    private fun initViews() {
+        val decoration = SpacingItemDecoration(1, toPx(15), true)
+        binding.recycler.addItemDecoration(decoration)
+        binding.recycler.setHasFixedSize(true)
+
+        adapter = CartItemAdapter(this, cartItems, this)
+        binding.recycler.adapter = adapter
+
+        binding.btnOrder.setOnClickListener {
+            val intent = Intent(this, OrderNowActivity::class.java)
+            intent.putExtra(RestaurantMenuActivity.EXTRA_RESTAURANT, restaurant)
+            startActivity(intent)
+        }
+        updateTotalPrice()
+    }
+
+    private fun updateTotalPrice() {
+        binding.btnOrder.isEnabled = cartItems.isNotEmpty()
+
+        if (cartItems.isNotEmpty()) {
+            var totalPrice = 0.0
+            for (cartItem in cartItems) totalPrice += cartItem.price * cartItem.count
+            binding.btnOrder.text =
+                getString(R.string.btn_order_with_unit, totalPrice)
+        }
+    }
+    override fun onCartUpdated(position: Int, cartItem: CartItem) {
+        cartItems[position] = cartItem
+        updateTotalPrice()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            appDatabase.cartItemDao().update(cartItems[position])
+        }
+    }
+
+    override fun onCartRemoved(position: Int, cartItem: CartItem) {
+        cartItems.removeAt(position)
+        adapter.notifyItemRemoved(position)
+        updateTotalPrice()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            appDatabase.cartItemDao().delete(cartItem)
+        }
+    }
     override fun onBackPressed() {
-
-        val intent= Intent(this@ShoppingCartActivity,RestaurantMenuActivity::class.java)
-
-        intent.putExtra("remainingItem",newMenuItem.size)
-        startActivity(intent)
-        finish()
+        setResult(RESULT_OK)
+        super.onBackPressed()
     }
-
 }
-
-
-
