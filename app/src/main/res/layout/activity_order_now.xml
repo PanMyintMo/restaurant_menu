@@ -286,6 +286,5 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:text="@string/btn_order_now" />
-
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

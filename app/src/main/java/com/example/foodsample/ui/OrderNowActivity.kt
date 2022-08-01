@@ -53,7 +53,6 @@ class OrderNowActivity : BaseActivity() {
         binding.recycler.setHasFixedSize(true)
         adapter = CartItemAdapter(this, cartItems, null)
         binding.recycler.adapter = adapter
-
         binding.edtName.addTextChangedListener { binding.edtNameLayout.error = null }
         binding.edtAddress.addTextChangedListener { binding.edtAddressLayout.error = null }
         binding.edtCity.addTextChangedListener { binding.edtCityLayout.error = null }
@@ -68,12 +67,14 @@ class OrderNowActivity : BaseActivity() {
         }
 
         binding.tvSubtotal.text = getString(R.string.title_price_unit, subtotalPrice)
-        binding.tvDeliveryCharge.text =
-            getString(R.string.title_price_unit, restaurant.deliveryCharge)
+//        binding.tvDeliveryCharge.text =
+//            getString(R.string.title_price_unit, restaurant.deliveryCharge)
         updateTotalPrice(false)
 
         binding.switchDelivery.setOnCheckedChangeListener { _, isChecked ->
             binding.deliveryLayout.visibility = if (isChecked) View.VISIBLE else View.GONE
+            binding.tvDeliveryCharge.text =
+                getString(R.string.title_price_unit, restaurant.deliveryCharge)
             updateTotalPrice(isChecked)
         }
 

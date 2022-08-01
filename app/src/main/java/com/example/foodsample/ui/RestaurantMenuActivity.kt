@@ -29,7 +29,6 @@ class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClick
     private lateinit var binding: ActivityRestaurantMenuBinding
     private lateinit var restaurant: Restaurant
     private lateinit var appDatabase: AppDatabase
-
     private lateinit var restaurantMenuList: ArrayList<RestaurantMenu>
     private val cartCheckedList = arrayListOf<Boolean>()
     private lateinit var adapter: RestaurantMenuAdapter
@@ -125,7 +124,6 @@ class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClick
             totalInCart--
             removeMenuFromDatabase(restaurantMenuList[position])
         }
-
         updateBadgeWithCheckout()
     }
 
@@ -148,7 +146,7 @@ class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClick
         badgeDrawable!!.number = totalInCart
 
         if (totalInCart == 0) {
-            binding.btnCheckout.setText(R.string.btn_checkout)
+           // binding.btnCheckout.setText(R.string.btn_checkout)
             binding.btnCheckout.setText(R.string.btn_checkout)
             BadgeUtils.detachBadgeDrawable(badgeDrawable, binding.toolbar, R.id.menu_shopping_cart)
 
@@ -160,7 +158,5 @@ class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClick
                 R.id.menu_shopping_cart
             )
         }
-
-
     }
 }
