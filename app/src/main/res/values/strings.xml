@@ -36,4 +36,5 @@
     <string name="err_empty">%s should not be empty.</string>
 
     <string name="msg_order_success">Order placed successfully.</string>
+    <string name="check_out">Check Out</string>
 </resources>
