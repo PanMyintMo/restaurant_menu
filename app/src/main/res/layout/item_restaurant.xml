@@ -20,12 +20,9 @@
                 android:id="@+id/ivThumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
                 android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
+                android:paddingBottom="5dp"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/ic_restaurant_placeholder" />
 
         </RelativeLayout>
@@ -34,7 +31,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+           >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -43,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                     tools:text="Chicago's Pizza" />
 

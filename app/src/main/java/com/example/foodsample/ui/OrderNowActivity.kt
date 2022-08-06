@@ -67,17 +67,18 @@ class OrderNowActivity : BaseActivity() {
         }
 
         binding.tvSubtotal.text = getString(R.string.title_price_unit, subtotalPrice)
-//        binding.tvDeliveryCharge.text =
-//            getString(R.string.title_price_unit, restaurant.deliveryCharge)
         updateTotalPrice(false)
 
         binding.switchDelivery.setOnCheckedChangeListener { _, isChecked ->
             binding.deliveryLayout.visibility = if (isChecked) View.VISIBLE else View.GONE
-            binding.tvDeliveryCharge.text =
-                getString(R.string.title_price_unit, restaurant.deliveryCharge)
-            updateTotalPrice(isChecked)
+            if (isChecked) {
+                binding.tvDeliveryCharge.text =
+                    getString(R.string.title_price_unit, restaurant.deliveryCharge)
+                updateTotalPrice(isChecked)
+            } else {
+                binding.tvDeliveryCharge.visibility=View.GONE
+            }
         }
-
         binding.btnOrderNow.setOnClickListener { checkForm() }
     }
 
