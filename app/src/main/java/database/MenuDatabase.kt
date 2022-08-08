@@ -12,7 +12,7 @@ import com.example.foodsample.entity.CartItem
 abstract class AppDatabase : RoomDatabase() {
     abstract fun cartItemDao(): CartItemDao
 
-    companion object {
+  companion  object {
         private const val DB_NAME = "app_database"
 
         @Volatile

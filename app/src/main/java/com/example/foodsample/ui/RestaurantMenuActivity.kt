@@ -146,7 +146,6 @@ class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClick
         badgeDrawable!!.number = totalInCart
 
         if (totalInCart == 0) {
-           // binding.btnCheckout.setText(R.string.btn_checkout)
             binding.btnCheckout.setText(R.string.btn_checkout)
             BadgeUtils.detachBadgeDrawable(badgeDrawable, binding.toolbar, R.id.menu_shopping_cart)
 

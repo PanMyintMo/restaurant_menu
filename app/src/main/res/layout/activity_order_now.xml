@@ -125,6 +125,21 @@
                         android:inputType="number" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+                <!--<com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/edtZipLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:hint="@string/hint_zip_code">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtZip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+-->
 
             </LinearLayout>
         </LinearLayout>
@@ -178,7 +193,6 @@
                     android:hint="@string/hint_mm_yy"
                     android:inputType="text"
                     android:maxLength="5" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -212,7 +226,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content "
             android:layout_marginTop="10dp"
             android:nestedScrollingEnabled="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -246,9 +260,11 @@
             <TableRow android:layout_marginTop="10dp">
 
                 <com.google.android.material.textview.MaterialTextView
+                   android:id="@+id/deliveryCharge"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:visibility="gone"
                     android:text="@string/title_delivery_charge"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
@@ -256,6 +272,7 @@
                     android:id="@+id/tvDeliveryCharge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginStart="20dp"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     tools:text="0.0 $" />

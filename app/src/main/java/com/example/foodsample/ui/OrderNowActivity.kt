@@ -72,11 +72,15 @@ class OrderNowActivity : BaseActivity() {
         binding.switchDelivery.setOnCheckedChangeListener { _, isChecked ->
             binding.deliveryLayout.visibility = if (isChecked) View.VISIBLE else View.GONE
             if (isChecked) {
+                binding.deliveryCharge.visibility=View.VISIBLE
+                binding.tvDeliveryCharge.visibility=View.VISIBLE
                 binding.tvDeliveryCharge.text =
                     getString(R.string.title_price_unit, restaurant.deliveryCharge)
                 updateTotalPrice(isChecked)
             } else {
+                binding.deliveryCharge.visibility=View.GONE
                 binding.tvDeliveryCharge.visibility=View.GONE
+                   updateTotalPrice(false)
             }
         }
         binding.btnOrderNow.setOnClickListener { checkForm() }
@@ -84,7 +88,7 @@ class OrderNowActivity : BaseActivity() {
 
     private fun updateTotalPrice(isDeliveryPicked: Boolean) {
         val totalPrice =
-            if (isDeliveryPicked) subtotalPrice + restaurant.deliveryCharge else subtotalPrice
+            if (isDeliveryPicked) subtotalPrice + restaurant.deliveryCharge else subtotalPrice+0
         binding.tvTotal.text = getString(R.string.title_price_unit, totalPrice)
     }
 
