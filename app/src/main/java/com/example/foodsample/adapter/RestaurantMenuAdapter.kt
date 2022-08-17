@@ -1,6 +1,7 @@
 package com.example.foodsample.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +12,14 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.foodsample.R
 import com.example.foodsample.databinding.ItemRestaurantMenuBinding
 import com.example.foodsample.models.RestaurantMenu
+import com.example.foodsample.ui.DetailActivity
+
 class RestaurantMenuAdapter(
     private val context: Context,
     private val restaurantMenuList: ArrayList<RestaurantMenu>,
     private val cartCheckedList: ArrayList<Boolean>,
-    private val onCartClickedListener: OnCartClickedListener
+    private val onCartClickedListener: OnCartClickedListener,
+
 ) :
     RecyclerView.Adapter<RestaurantMenuAdapter.PlaceHolder>() {
 
@@ -46,6 +50,12 @@ class RestaurantMenuAdapter(
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(ivThumbnail)
 
+            layoutDetail.setOnClickListener {
+                val intent = Intent(context, DetailActivity::class.java)
+                intent.putExtra("restaurant",restaurantMenu)
+                //intent.putExtra("restaurant",restaurantMenu.url)
+                context.startActivity(intent)
+            }
             btnCart.setOnClickListener {
                 isCartChecked = !isCartChecked
                 btnCart.setIconResource(getCartIcon(isCartChecked))
@@ -69,4 +79,6 @@ class RestaurantMenuAdapter(
     interface OnCartClickedListener {
         fun onCartClick(position: Int, isCartChecked: Boolean)
     }
+
+
 }

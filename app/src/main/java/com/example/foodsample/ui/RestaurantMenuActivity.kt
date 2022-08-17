@@ -20,7 +20,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClickedListener {
+class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClickedListener{
 
     companion object {
         const val EXTRA_RESTAURANT = "EXTRA_RESTAURANT"
@@ -29,8 +29,8 @@ class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClick
     private lateinit var binding: ActivityRestaurantMenuBinding
     private lateinit var restaurant: Restaurant
     private lateinit var appDatabase: AppDatabase
-    private lateinit var restaurantMenuList: ArrayList<RestaurantMenu>
-    private val cartCheckedList = arrayListOf<Boolean>()
+    private  var restaurantMenuList: ArrayList<RestaurantMenu> =arrayListOf()
+    private val cartCheckedList:ArrayList<Boolean> = arrayListOf()
     private lateinit var adapter: RestaurantMenuAdapter
     private var badgeDrawable: BadgeDrawable? = null
     private var totalInCart = 0

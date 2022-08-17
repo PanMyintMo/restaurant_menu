@@ -13,5 +13,11 @@ data class RestaurantMenu(
     @SerializedName("price")
     val price: Double,
     @SerializedName("url")
-    val url: String
-) : Parcelable
+    val url: String,
+    @SerializedName("instruction")
+    val instruction:String,
+    @SerializedName("overview")
+    val overview:String,
+    @SerializedName("ingredients")
+    val ingredients:ArrayList<Ingredient>
+    ) : Parcelable

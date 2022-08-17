@@ -16,6 +16,7 @@
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/drawable/main_menu_shopping_cart.xml" value="0.122" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/drawable/nb_badge_bg.xml" value="0.1215" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/action_bar_notification_icon.xml" value="0.33" />
+        <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_detail.xml" value="0.25" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_order_now.xml" value="0.1" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_order_success.xml" value="0.17083333333333334" />
@@ -24,9 +25,13 @@
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_shopping_cart.xml" value="0.33" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_splash.xml" value="0.18" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_success_order.xml" value="0.18" />
+        <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/fragment_ingredient.xml" value="0.1361111111111111" />
+        <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/fragment_instruction.xml" value="0.1361111111111111" />
+        <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/fragment_overview.xml" value="0.1814814814814815" />
+        <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/ingredient_row.xml" value="0.5" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/item_cart.xml" value="0.1" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/item_restaurant.xml" value="0.25" />
-        <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/item_restaurant_menu.xml" value="0.22" />
+        <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/item_restaurant_menu.xml" value="0.2" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/menu_record_row.xml" value="0.33" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/menu_row.xml" value="0.22" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/menu_shopping_cart.xml" value="0.22" />
@@ -50,6 +55,13 @@
       <set>
         <option value="FoodSample.app" />
       </set>
+    </option>
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.1" />
+      </ProjectState>
     </option>
   </component>
 </project>

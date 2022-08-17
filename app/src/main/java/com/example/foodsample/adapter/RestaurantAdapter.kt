@@ -1,10 +1,12 @@
 package com.example.foodsample.adapter
 
+import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -13,6 +15,7 @@ import com.example.foodsample.databinding.ItemRestaurantBinding
 import com.example.foodsample.models.Hours
 import com.example.foodsample.models.Restaurant
 import com.example.foodsample.ui.MainActivity
+import com.example.foodsample.ui.RestaurantMenuActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -49,10 +52,13 @@ class RestaurantAdapter(
                 .placeholder(R.drawable.ic_restaurant_placeholder)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(ivThumbnail)
-
             root.setOnClickListener {
+
                 onItemClickedListener.onItemClick(restaurant)
-            }
+                val intent = Intent(holder.itemView.context, RestaurantMenuActivity::class.java)
+            intent.putExtra(RestaurantMenuActivity.EXTRA_RESTAURANT, restaurant)
+            holder.itemView.context.startActivity(intent)
+        }
         }
     }
 

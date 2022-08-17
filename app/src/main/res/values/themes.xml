@@ -30,6 +30,20 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:statusBarColor">@color/toolbar</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">?attr/isLightTheme</item>
+    </style>
 
+    <style name="Theme.FoodSample.DetailActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#4CAF50</item>
+        <item name="colorPrimaryVariant">#009688</item>
+        <item name="colorOnPrimary">@color/teal_200</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="android:statusBarColor">@color/design_default_color_secondary</item>
+    </style>
+
+    <style name="CustomTabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="background">@color/actionBarBackground</item>
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabSelectedTextColor">@color/white</item>
     </style>
 </resources>
