@@ -72,12 +72,6 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when(item.itemId){
-            R.id.restaurant_search ->{
-
-            }
-        }
         return super.onOptionsItemSelected(item)
     }
 
