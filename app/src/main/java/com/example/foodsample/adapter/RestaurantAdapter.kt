@@ -6,6 +6,8 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,12 +20,19 @@ import com.example.foodsample.ui.MainActivity
 import com.example.foodsample.ui.RestaurantMenuActivity
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class RestaurantAdapter(
     private val restaurants: ArrayList<Restaurant>,
     private val onItemClickedListener: OnItemClickedListener
 ) :
-    RecyclerView.Adapter<RestaurantAdapter.PlaceHolder>() {
+    RecyclerView.Adapter<RestaurantAdapter.PlaceHolder>(),Filterable {
+
+    private var userFilter:ArrayList<Restaurant> = arrayListOf()
+
+    init {
+        userFilter = restaurants
+    }
 
     private val calendar = java.util.Calendar.getInstance()
     private val todayName =
@@ -40,7 +49,7 @@ class RestaurantAdapter(
     }
 
     override fun onBindViewHolder(holder: PlaceHolder, position: Int) {
-        val restaurant = restaurants[position]
+        val restaurant = userFilter[position]
 
         holder.binding.apply {
             tvName.text = restaurant.name
@@ -76,10 +85,41 @@ class RestaurantAdapter(
     }
 
     override fun getItemCount(): Int {
-        return restaurants.size
+        return userFilter.size
     }
 
     interface OnItemClickedListener {
         fun onItemClick(restaurant: Restaurant)
+    }
+
+    override fun getFilter(): Filter {
+       return object :Filter(){
+           override fun performFiltering(p0: CharSequence?): FilterResults {
+               val charSequence=p0.toString()
+              userFilter= if (charSequence.isEmpty()){
+                  restaurants
+              }
+               else {
+
+                   val resultList:ArrayList<Restaurant> = arrayListOf()
+                   for (row in restaurants){
+                       if (row.name.contains(charSequence)){
+                           resultList.add(row)
+                       }
+                   }
+                  resultList
+              }
+
+               val filterResults=FilterResults()
+               filterResults.values=userFilter
+               return filterResults
+           }
+
+           override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+              userFilter = p1?.values as ArrayList<Restaurant>
+               notifyDataSetChanged()
+           }
+
+       }
     }
 }

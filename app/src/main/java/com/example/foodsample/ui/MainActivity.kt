@@ -2,7 +2,11 @@ package com.example.foodsample.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.foodsample.R
 import com.example.foodsample.adapter.RestaurantAdapter
 import com.example.foodsample.databinding.ActivityMainBinding
 import com.example.foodsample.models.Restaurant
@@ -44,6 +48,37 @@ class MainActivity : BaseActivity(),
             .use { it.readText() }
         val restaurantListType = object : TypeToken<List<Restaurant>>() {}.type
         return Gson().fromJson(json, restaurantListType) as List<Restaurant>
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.restaurant_search,menu)
+        val menuItem= menu?.findItem(R.id.restaurant_search)
+        val search= menuItem?.actionView as SearchView
+
+        search.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                adapter.filter.filter(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return true
+            }
+
+        })
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId){
+            R.id.restaurant_search ->{
+
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onItemClick(restaurant: Restaurant) {
