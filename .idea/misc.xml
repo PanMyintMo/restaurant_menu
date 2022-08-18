@@ -6,6 +6,7 @@
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/drawable/backgroung_btn.xml" value="0.115" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/drawable/bg_open_hours.xml" value="0.123" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/drawable/clickbtn.xml" value="0.123" />
+        <entry key="..\:/TestProjects/FoodSample/app/src/main/res/drawable/cust_search_bg.xml" value="0.1015" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/drawable/custom_shape.xml" value="0.1" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/drawable/ic_add.xml" value="0.123" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/drawable/ic_add_shopping_cart.xml" value="0.123" />
@@ -21,7 +22,7 @@
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_order_now.xml" value="0.1" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_order_success.xml" value="0.17083333333333334" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_place_your_order.xml" value="0.25" />
-        <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_restaurant_menu.xml" value="0.25864453665283543" />
+        <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_restaurant_menu.xml" value="0.1" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_shopping_cart.xml" value="0.33" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_splash.xml" value="0.18" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/activity_success_order.xml" value="0.18" />
@@ -38,8 +39,10 @@
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/place_your_order_activity.xml" value="0.1398148148148148" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/place_your_order_row.xml" value="0.33" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/layout/restaurant_data_row.xml" value="0.37383177570093457" />
+        <entry key="..\:/TestProjects/FoodSample/app/src/main/res/menu/cust_search.xml" value="0.1361111111111111" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/menu/custom_popup_menu.xml" value="0.17083333333333334" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/menu/restaurant_menu.xml" value="0.17083333333333334" />
+        <entry key="..\:/TestProjects/FoodSample/app/src/main/res/menu/restaurant_search.xml" value="0.33" />
         <entry key="..\:/TestProjects/FoodSample/app/src/main/res/menu/shopping_cart_menu.xml" value="0.25" />
       </map>
     </option>

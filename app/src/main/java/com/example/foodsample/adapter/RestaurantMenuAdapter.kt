@@ -1,10 +1,14 @@
 package com.example.foodsample.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,8 +24,14 @@ class RestaurantMenuAdapter(
     private val cartCheckedList: ArrayList<Boolean>,
     private val onCartClickedListener: OnCartClickedListener,
 
-) :
-    RecyclerView.Adapter<RestaurantMenuAdapter.PlaceHolder>() {
+    ) :
+    RecyclerView.Adapter<RestaurantMenuAdapter.PlaceHolder>(), Filterable {
+
+    private var userFilter: ArrayList<RestaurantMenu> = arrayListOf()
+
+    init {
+        userFilter = restaurantMenuList
+    }
 
     inner class PlaceHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ItemRestaurantMenuBinding.bind(itemView)
@@ -35,7 +45,7 @@ class RestaurantMenuAdapter(
     }
 
     override fun onBindViewHolder(holder: PlaceHolder, position: Int) {
-        val restaurantMenu = restaurantMenuList[position]
+        val restaurantMenu = userFilter[position]
         var isCartChecked = cartCheckedList[position]
 
         holder.binding.apply {
@@ -52,8 +62,7 @@ class RestaurantMenuAdapter(
 
             layoutDetail.setOnClickListener {
                 val intent = Intent(context, DetailActivity::class.java)
-                intent.putExtra("restaurant",restaurantMenu)
-                //intent.putExtra("restaurant",restaurantMenu.url)
+                intent.putExtra("restaurant", restaurantMenu)
                 context.startActivity(intent)
             }
             btnCart.setOnClickListener {
@@ -73,12 +82,39 @@ class RestaurantMenuAdapter(
     }
 
     override fun getItemCount(): Int {
-        return restaurantMenuList.size
+        return userFilter.size
     }
 
     interface OnCartClickedListener {
         fun onCartClick(position: Int, isCartChecked: Boolean)
     }
 
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(p0: CharSequence?): FilterResults {
+                val charSequence = p0.toString()
+                userFilter = if (charSequence.isEmpty()) {
+                    restaurantMenuList
+                } else {
+                    val resultList: ArrayList<RestaurantMenu> = arrayListOf()
+                    for (row in restaurantMenuList) {
+                        if (row.name.contains(charSequence, true)) {
+                            resultList.add(row)
+                        }
+                    }
+                    resultList
+                }
+                val filterResults = FilterResults()
+                filterResults.values = userFilter
+                return filterResults
+            }
 
-}
+            @SuppressLint("NotifyDataSetChanged")
+            override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+                userFilter =
+                    p1?.values as ArrayList<RestaurantMenu>/* = java.util.ArrayList<com.example.foodsample.models.RestaurantMenu> */
+                notifyDataSetChanged()
+            }
+        }
+    }
+    }

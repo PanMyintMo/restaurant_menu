@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.SearchView
 import com.example.foodsample.R
 import com.example.foodsample.adapter.RestaurantMenuAdapter
 import com.example.foodsample.databinding.ActivityRestaurantMenuBinding
@@ -20,7 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClickedListener{
+class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClickedListener {
 
     companion object {
         const val EXTRA_RESTAURANT = "EXTRA_RESTAURANT"
@@ -29,8 +30,8 @@ class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClick
     private lateinit var binding: ActivityRestaurantMenuBinding
     private lateinit var restaurant: Restaurant
     private lateinit var appDatabase: AppDatabase
-    private  var restaurantMenuList: ArrayList<RestaurantMenu> =arrayListOf()
-    private val cartCheckedList:ArrayList<Boolean> = arrayListOf()
+    private var restaurantMenuList: ArrayList<RestaurantMenu> = arrayListOf()
+    private val cartCheckedList: ArrayList<Boolean> = arrayListOf()
     private lateinit var adapter: RestaurantMenuAdapter
     private var badgeDrawable: BadgeDrawable? = null
     private var totalInCart = 0
@@ -40,17 +41,33 @@ class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClick
         binding = ActivityRestaurantMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-
         appDatabase = AppDatabase.getInstance(this)
         intent.getParcelableExtra<Restaurant>(EXTRA_RESTAURANT)?.let {
             restaurant = it
             restaurantMenuList = restaurant.menus
-            restaurantMenuList.forEach { _ -> cartCheckedList.add(false) }
-
+            restaurantMenuList.forEach { _ ->
+                cartCheckedList.add(false)
+            }
             initViews()
             loadCartItems()
+            binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    adapter.filter.filter(query)
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    adapter.filter.filter(newText)
+                    return true
+                }
+
+            })
+
         }
+
+
     }
+
 
     private fun loadCartItems() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -69,6 +86,7 @@ class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClick
         }
     }
 
+
     private fun initViews() {
         supportActionBar?.title = restaurant.name
         supportActionBar?.subtitle = restaurant.address
@@ -80,8 +98,10 @@ class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClick
 
         adapter = RestaurantMenuAdapter(this, restaurantMenuList, cartCheckedList, this)
         binding.recycler.adapter = adapter
+
         binding.btnCheckout.setOnClickListener { launchShoppingCartActivity() }
     }
+
 
     private fun addMenuToDatabase(restaurantMenu: RestaurantMenu) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -114,6 +134,7 @@ class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClick
         intent.putExtra(EXTRA_RESTAURANT, restaurant)
         resultLauncher.launch(intent)
     }
+
 
     override fun onCartClick(position: Int, isCartChecked: Boolean) {
         cartCheckedList[position] = isCartChecked
@@ -158,4 +179,6 @@ class RestaurantMenuActivity : BaseActivity(), RestaurantMenuAdapter.OnCartClick
             )
         }
     }
+
+
 }
