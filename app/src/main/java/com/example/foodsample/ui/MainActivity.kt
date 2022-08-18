@@ -3,6 +3,7 @@ package com.example.foodsample.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,7 @@ class MainActivity : BaseActivity(),
     private lateinit var binding: ActivityMainBinding
     private val restaurants = arrayListOf<Restaurant>()
     private lateinit var adapter: RestaurantAdapter
+    private var searchView: SearchView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,11 +53,12 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.restaurant_search,menu)
-        val menuItem= menu?.findItem(R.id.restaurant_search)
-        val search= menuItem?.actionView as SearchView
+        menuInflater.inflate(R.menu.restaurant_search, menu)
+        val search = menu?.findItem(R.id.rest_search)
+        searchView = search?.actionView as? SearchView
 
-        search.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
+
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 adapter.filter.filter(query)
                 return true
@@ -65,21 +68,16 @@ class MainActivity : BaseActivity(),
                 adapter.filter.filter(newText)
                 return true
             }
-
         })
 
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return super.onOptionsItemSelected(item)
+        return  super.onCreateOptionsMenu(menu)
     }
 
     override fun onItemClick(restaurant: Restaurant) {
 
-       /* val intent = Intent(this@MainActivity, DetailActivity::class.java)
-        intent.putExtra(RestaurantMenuActivity.EXTRA_RESTAURANT, restaurants)
-        startActivity(intent)*/
+        /* val intent = Intent(this@MainActivity, DetailActivity::class.java)
+         intent.putExtra(RestaurantMenuActivity.EXTRA_RESTAURANT, restaurants)
+         startActivity(intent)*/
 
     }
 }
