@@ -12,8 +12,8 @@ android {
         applicationId "com.pan.foodsample"
         minSdk 21
         targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -40,7 +40,7 @@ android {
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.activity:activity-ktx:1.5.1'
@@ -49,17 +49,17 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.google.code.gson:gson:2.9.1'
     implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
+    implementation('org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4')
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0-alpha01")
 
     // Glide
-    implementation 'com.github.bumptech.glide:glide:4.13.1'
-    kapt 'com.github.bumptech.glide:compiler:4.13.1'
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
+    kapt 'com.github.bumptech.glide:compiler:4.13.2'
 
     //notification
-    implementation 'com.nex3z:notification-badge:1.0.4'
+    implementation 'com.nex3z:notification-badge:1.0.5'
     //swipeRefresh
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
@@ -77,5 +77,5 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.0-alpha01")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0-alpha01")
     //jsoup for html parser
-    implementation 'org.jsoup:jsoup:1.14.3'
+    implementation 'org.jsoup:jsoup:1.15.2'
 }
