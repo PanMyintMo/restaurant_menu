@@ -38,7 +38,40 @@
     <string name="msg_order_success">Order placed successfully.</string>
     <string name="check_out">Check Out</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="search_here">Search Here!</string>
     <string name="search_restaurant">Search Restaurant</string>
+    <string name="login">Login</string>
+    <string name="profile">Profile</string>
+    <string name="communicate">Communicate</string>
+    <string name="share">Share</string>
+    <string name="rate_up">Rate Up</string>
+    //drawer
+    <string name="open">Drawer Open</string>
+    <string name="close">Drawer Close</string>
+    <string name="setting">Setting</string>
+    <string name="log_out">Log Out</string>
+    <string name="btn_reorder">Reorder</string>
+    <string name="title_pending">Pending</string>
+    <string name="please_enter_your_credential_login">Please Enter Your Credential Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forget_password">Forget Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="_959_79821758">+959 79821758</string>
+    <string name="please_enter_your_register_app">Please Enter Your Register App!</string>
+    <string name="mgmg_gmail_com">mgmg@gmail.com</string>
+    <string name="name">Name</string>
+    <string name="register">Register</string>
+    <string name="register_here">Register Here?</string>
+    <string name="submit">Submit</string>
+    <string name="rating_result_is">Rating Result is :</string>
+    <string name="call">Call</string>
+    <string name="reorder">Reorder</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="edit">Edit</string>
+    <string name="order_history">Order History</string>
+    <string name="myanmar">Myanmar</string>
+
 </resources>

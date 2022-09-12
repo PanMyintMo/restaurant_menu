@@ -12,18 +12,15 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:background="@color/toolbar"
-            android:layout_height="?attr/actionBarSize"
-            android:id="@+id/toolbar"/>
-
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/toolbar" />
     </com.google.android.material.appbar.AppBarLayout>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_height="match_parent">
-
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search"
             android:layout_width="match_parent"
@@ -32,11 +29,11 @@
             android:background="@drawable/cust_search_bg"
             app:queryHint="Search Here"
             android:clickable="true"
+            app:iconifiedByDefault="false"
             app:layout_constraintEnd_toEndOf="@+id/recycler"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:focusable="true" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="0dp"

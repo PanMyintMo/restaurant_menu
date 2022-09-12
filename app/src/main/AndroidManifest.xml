@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.foodsample">
+    package="com.pan.foodbox">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -16,25 +19,43 @@
         android:theme="@style/Theme.FoodSample"
         tools:targetApi="31">
         <activity
-            android:name=".ui.DetailActivity"
+            android:name="com.pan.foodbox.SettingActivity"
+            android:exported="false"/>
+
+
+        <activity
+            android:name="com.pan.foodbox.ui.RatingBarActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.pan.foodbox.ui.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.pan.foodbox.ui.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.pan.foodbox.ui.OrderHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.pan.foodbox.ui.DetailActivity"
             android:exported="false"
             android:label="Detail"
-            android:theme="@style/Theme.FoodSample.DetailActivity"/>
+            android:theme="@style/Theme.FoodSample.DetailActivity" />
         <activity
-            android:name=".ui.OrderSuccessActivity"
+            android:name="com.pan.foodbox.ui.OrderSuccessActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.ShoppingCartActivity"
+            android:name="com.pan.foodbox.ui.ShoppingCartActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.OrderNowActivity"
+            android:name="com.pan.foodbox.ui.OrderNowActivity"
             android:exported="false" />
+
         <activity
-            android:name=".ui.RestaurantMenuActivity"
+            android:name="com.pan.foodbox.ui.RestaurantMenuActivity"
             android:exported="false"
             android:theme="@style/Theme.FoodSample.NoActionBar" />
         <activity
-            android:name=".ui.SplashActivity"
+            android:name="com.pan.foodbox.ui.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +64,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.pan.foodbox.ui.MainActivity"
             android:exported="true">
 
             <!-- <intent-filter> -->
